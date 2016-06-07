@@ -19,7 +19,7 @@ class Gender_guess:
         return data_nouns
     
     def pick_word(self, data_frame):
-        """Randomly pick an index to select word to be tested."""
+        """Randomly picks an index to select word to be tested."""
         random_pick = random.randint(0, len(data_frame.index) -1)
         return random_pick
 
