@@ -21,7 +21,7 @@ I scraped the list I am using from [here](http://www.byki.com/lists/german/greg%
 
 ### Track your progress
 
-The most interesting part for learners is the possibility of tracking your progress. I added the possibility of reporting once the testing is done. The pdf reports looks like this:
+The most interesting part for learners is the possibility of tracking your progress. I added the possibility of reporting once the testing is done. This possibility is only available when running `noun_game.py`, not for `IPython Notebook`.  The pdf report looks like this:
 
 ![der_die_das report](https://cloud.githubusercontent.com/assets/7328852/16083475/5aaa4954-3315-11e6-8fb1-57a612f22301.png)
 
