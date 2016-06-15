@@ -3,6 +3,7 @@ import random
 import datetime
 import os.path
 import time
+import reporting
 
 class Gender_guess:
     """"Implements the main game. A word in German is chosen and the user is asked for the gender."""
@@ -71,6 +72,16 @@ class Gender_guess:
                                'input': [gender_input],'article': [german_gender], 
                                'wort': [german_wort], 'word': [english_word], 'correct': [correct]})
         self.data_base = self.data_base.append(to_add, ignore_index=True)
+
+    def get_pdf_results(self):
+        print("Do you want to generate a report with your results?")
+        answer_report = input("Please write yes [y] or no [n] \n\n ").lower()
+        while answer_report not in ["yes", "y", "n", "no"]:
+            print("\n\nPlease, make sure to enter a valid input.")
+            answer_report = input("Please write yes [y] or no [n]..\n\n  ").lower()
+        if answer_report == "y" or "yes":
+            reporting.run_report()
+            os.system("open report.pdf")
     
     def run_program(self, number_of_words):
         """Main logic of program. Stores results to a pandas data frame for time series tracking."""
@@ -90,9 +101,10 @@ class Gender_guess:
             previous_data = pd.read_pickle("results")
             previous_data = previous_data.append(self.data_base, ignore_index=True)
             previous_data.to_pickle("results")
+            self.get_pdf_results()
         else: 
             self.data_base.to_pickle("results")
 
 
 prueba_1 = Gender_guess('final_data.csv')
-prueba_1.run_program(20)
+prueba_1.run_program(5)

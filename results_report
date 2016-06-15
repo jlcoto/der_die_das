@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <style type="text/css">
+
+  	body {
+  	margin-top: 30px;
+	margin-left: 5%;
+	margin-right: 10%;
+	font-family: 'Source Sans Pro', sans-serif;
+	line-height: 140%;
+
+	}
+	
+	h1 {
+		color: #D75643;
+		text-align: center;
+	}
+	
+	.title {
+		color: #D45F2D;
+		font-family: 'Source Sans Pro', sans-serif;
+		margin-bottom: 30px;
+	}
+
+	.image-result{
+		margin-left: 15%;
+		margin-right: 10%;
+		margin-top: 30px;
+		margin-bottom: 30px;
+		width: 325px;
+		height: 275px;
+	}
+
+	.image-wrong-words {
+		margin-left: 15%;
+		margin-right: 10%;
+		margin-top: 30px;
+		margin-bottom: 30px;
+		width: 400px;
+		height: 420px;
+	}
+
+	.data-fig {
+		color: #D45F2D;
+	}
+
+  </style>
+</head>
+
+  <title> Der, die, das -- Report </title>
+</head>
+
+<body>
+
+  <h1 class="title"> Der, die, das / Report </h1>
+
+  Thanks for playing the der, die, das game. Since you have been playing, you have been tested on <span class="data-fig"> 235 </span> words. The day that you practice the most was <span class="data-fig"> Monday 13 Jun </span>. That day, you did a total of <span class="data-fig"> 80 </span> words. Du bist fleißig :) <br> <br>
+  These are the results of the day. 
+
+  You have an overall of <span class="data-fig"> 84.68% </span> correct answers. <br>
+
+  <img src= "file:///Users/Jose/Documents/der_die_das/img/overall_results_per.png", class="image-result"> <br>
+
+  Historically, looks like <span class="data-fig"> das </span> is your stronger gender. You have a total of <span class="data-fig"> 90.38% </span> of correct answers. On the other hand, <span class="data-fig">  der </span> is your weakest one. You have <span class="data-fig">  81.19% </span> correct ones. <br>
+
+  <img src="file:///Users/Jose/Documents/der_die_das/img/results_per_gen.png", class="image-result"> <br>
+
+  Here are your results per date. It seems like your best day was <span class="data-fig"> Monday 13 Jun </span>. On that day, you had <span class="data-fig"> 86.25%</span> of correct responses. <br>
+
+   <img src="file:///Users/Jose/Documents/der_die_das/img/results_per_date.png", class="image-result"> <br>
+
+   Here are the words that, historically, you have gotten most frequently wrong. Their correct genders are provided, so you don't get them wrong next time! <br>
+   
+	<img src="file:///Users/Jose/Documents/der_die_das/img/wrong_rank.png", class="image-wrong-words"> <br>
+
+	Here is how your daily evolution looks like. Keep up the upward trend! <br>
+
+	<img src="file:///Users/Jose/Documents/der_die_das/img/daily_stats.png", class="image-result"> <br>
+
+	
+
+	The gender that shows more improvement since that last time you played is  <span class="data-fig"> der </span> . The correct responses have increase in  <span class="data-fig"> 9.09% </span>. On the other hand, the gender that shows the lowest improvement is <span class="data-fig"> die  </span>,  with <span class="data-fig"> -15.0% </span>.  <br>
+
+	
+	<img src="file:///Users/Jose/Documents/der_die_das/img/daily_stats_per_gender.png", class="image-result"> <br>
+	
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

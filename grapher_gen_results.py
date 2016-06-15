@@ -2,6 +2,7 @@ import datetime
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+import os.path
 
 class Graphs:
     def __init__(self, data_base):
@@ -25,7 +26,7 @@ class Graphs:
         ax.xaxis.set_ticks_position('bottom')
         ax.set_xticklabels(('Right','Wrong'))
         fig.suptitle("Percentage Right/Wrong", fontsize=15)
-        plt.show()
+        #plt.show()
 
     def results_per_gen(self):
         grouped = (self.data_base["correct"]==True).groupby(self.data_base["article"])
@@ -55,7 +56,7 @@ class Graphs:
         ax.set_xticklabels(('der','die', 'das'))
         ax.set_xlim([0.9, 3.1])
         fig.suptitle("Percentage Right/Wrong by Gender", fontsize=15)
-        plt.show()
+        # plt.show()
 
     def results_per_date(self):
         grouped = (self.data_base["correct"]==True).groupby(self.data_base["date"])
@@ -84,7 +85,7 @@ class Graphs:
         ax.set_xticklabels(dates_played)
         fig.suptitle("Right/Wrong by date", fontsize=15)
         ax.set_xlim([ax.get_xlim()[0], ax.get_xlim()[1]+0.15])
-        plt.show()
+        # plt.show()
 
     def wrong_rank(self):
         wrong_words = self.data_base[self.data_base["correct"]==False]
@@ -116,8 +117,8 @@ class Graphs:
             ax.text(article + 0.4, 0.15 , list(first_twenty_wrong['article'])[article], rotation= 90,
                    horizontalalignment='center',
                 verticalalignment='center', fontsize=12) 
-        plt.tight_layout()
-        plt.show()
+        # plt.tight_layout()
+        # plt.show()
 
     def daily_stats(self):
         grouped = (self.data_base["correct"]==True).groupby(self.data_base["date"])
@@ -144,7 +145,7 @@ class Graphs:
         ax.legend(loc='upper right').get_frame().set_alpha(0.3)
         ax.set_title('Daily Stats', fontsize=15)
         ax.set_xticklabels([date.strftime("%d %b") for date in dates])
-        plt.show()
+        # plt.show()
 
     def daily_stats_per_gender(self):
         grouped = (self.data_base["correct"]==True).groupby([self.data_base["date"], self.data_base["article"]])
@@ -178,13 +179,29 @@ class Graphs:
         ax.grid(axis="y", zorder=0, color="#9698A1")
         ax.set_xticks((dates))
         ax.set_xlim([left_limit, right_limit])
-        ax.set_ylim([0., 1.])
+        ax.set_ylim([-0.05, 1.1])
         ax.set_title('Daily Stats per gender', fontsize=15)
         ax.set_xticklabels([date.strftime("%d %b") for date in dates])
         ax.legend(lab_chars, lab_desc, loc='upper center', 
                   bbox_to_anchor=(0.5, -0.05), fancybox=True, shadow=True, ncol=3)
-        plt.show()
-        
+        # plt.show()
+
+    def generate_report(self): 
+        if not os.path.exists("img"):
+            os.makedirs("img")
+        self.overall_results_per()
+        plt.savefig('img/overall_results_per', bbox_inches='tight')
+        self.results_per_gen()
+        plt.savefig('img/results_per_gen', bbox_inches='tight')
+        self.results_per_date()
+        plt.savefig('img/results_per_date', bbox_inches='tight')
+        self.wrong_rank()
+        plt.savefig('img/wrong_rank', bbox_inches='tight')
+        self.daily_stats()
+        plt.savefig('img/daily_stats', bbox_inches='tight')
+        self.daily_stats_per_gender()
+        plt.savefig('img/daily_stats_per_gender', bbox_inches='tight')
+
 
 graph_test = Graphs(pd.read_pickle("results"))
-graph_test.results_per_date()
+graph_test.generate_report()
