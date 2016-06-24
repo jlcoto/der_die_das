@@ -29,8 +29,7 @@ The most interesting part for learners is the possibility of tracking your progr
 
 There are still several ways in which this project can me extended. Those that come to mind are:
 
-- Correct printing function. --> Urgent
-- Extend / Improve current word list.
+- Extend / Improve current word list. --> **Next on priority list!**
 - Offer a report with current progress after program is run (this could be a pdf report, e.g.)
 
 In the long term, I want to work in some kind of recommendation system that will give users a proper balance of words that they should learn in order to maximize recall of genders. --> Long term project.
