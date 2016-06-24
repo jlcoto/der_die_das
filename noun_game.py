@@ -32,13 +32,11 @@ class Gender_guess:
     
     def print_words(self, german, english):
         """Prints the set of instructions and words for the user."""
-        german_spacing = int(len(german)/2)
-        english_spacing = int(len(english)/2)
-        total_spacing = (german_spacing + english_spacing)*2 + len("Deutsch"+"English") + 2
-        print("{0}{1}{2}|| {3}{4}{5} \n {6} ".format
-              (" "*german_spacing  ,"Deutsch", " "*german_spacing ," "*english_spacing
-               ,"English" , " "*english_spacing, '='* total_spacing))
-        print(" {0}{1}{2}\n\n".format(german," "*(german_spacing + 4) , english))
+        german_size = len(german) + 6
+        english_size = len(english) + 6
+        print("German".center(german_size) + "||" + "English".center(english_size))
+        print("="*(german_size + english_size+2))
+        print(german.center(german_size+1)  +  english.center(english_size+1)+"\n\n")
  
     def take_input(self):
         """Takes input of user. Prechecks input values."""
