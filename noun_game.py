@@ -4,6 +4,7 @@ import datetime
 import os.path
 import time
 import reporting
+import grapher_gen_results
 
 class Gender_guess:
     """"Implements the main game. A word in German is chosen and the user is asked for the gender."""
@@ -78,6 +79,8 @@ class Gender_guess:
             print("\n\nPlease, make sure to enter a valid input.")
             answer_report = input("Please write yes [y] or no [n]..\n\n  ").lower()
         if answer_report == "y" or "yes":
+            graph_test = grapher_gen_results.Graphs(pd.read_pickle("results"))
+            graph_test.generate_report()
             reporting.run_report()
             os.system("open report.pdf")
     
