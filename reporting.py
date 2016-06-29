@@ -5,11 +5,12 @@ import pandas as pd
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML
 
+
 def run_report():
 	env = Environment(loader = FileSystemLoader('.'))
 	template = env.get_template("my_report.html")
 	
-	main_figures = pd.read_pickle("results")
+	main_figures = pd.read_pickle("game_results")
 	
 	#get current dir for printing images
 	current_dir = os.getcwd()
@@ -22,7 +23,7 @@ def run_report():
 	
 	
 	#Overall correct
-	per_overall_correct = str(round(main_figures["correct"].sum() / len(main_figures), 4) * 100) + "%"
+	per_overall_correct = str(round((main_figures["correct"].sum() / len(main_figures)), 4) * 100) + "%"
 	
 	
 	# Gender right wrong reporting
@@ -40,17 +41,27 @@ def run_report():
 	qt_date_max_correct = str(round(correct_by_date.max(), 4)*100) + "%"
 	
 	# Historical results per gender
-	grouped_gen_date = (main_figures["correct"]==True).groupby(
-	            [main_figures["date"], main_figures["article"]])
-	correct_gender_date = grouped_gen_date.mean().reset_index()
-	correct_gender_date["pct_change"] =  (correct_gender_date.groupby("article").pct_change())*100
-	more_once = len(pd.unique(correct_gender_date["date"])) > 1
-	last_date = correct_gender_date[correct_gender_date["date"] == max(correct_gender_date.date)]
-	biggest_change_gen_date = str(round(max(last_date["pct_change"]), 2)) + "%"
-	gender_big_change = last_date.loc[[last_date["pct_change"].idxmax()]]["article"].to_string(index=False)
-	lowest_change_gen_date = str(round(min(last_date["pct_change"]), 2)) + "%"
-	gender_lowest_change_gen_date = last_date.loc[[last_date["pct_change"].idxmin()]]["article"].to_string(index=False)
-	
+
+	#First, check if we only have one date:
+	grouped_by_art = main_figures.groupby(main_figures["article"])
+	only_one_date = (grouped_by_art['date'].agg({'more_dates': lambda x: len(pd.unique(x)) == 1})).all()[0] 
+	if only_one_date:
+		more_once = None
+		gender_big_change = None
+		biggest_change_gen_date = None
+		lowest_change_gen_date = None
+		gender_lowest_change_gen_date = None
+	else:
+		grouped_gen_date = (main_figures["correct"]==True).groupby([main_figures["date"], main_figures["article"]])
+		correct_gender_date = grouped_gen_date.mean().reset_index()
+		correct_gender_date["pct_change"] =  (correct_gender_date.groupby("article").pct_change())*100
+		more_once = len(pd.unique(correct_gender_date["date"])) > 1
+		last_date = correct_gender_date[correct_gender_date["date"] == max(correct_gender_date.date)]
+		biggest_change_gen_date = str(round(max(last_date["pct_change"]), 2)) + "%"
+		gender_big_change = last_date.loc[[last_date["pct_change"].idxmax()]]["article"].to_string(index=False)
+		lowest_change_gen_date = str(round(min(last_date["pct_change"]), 2)) + "%"
+		gender_lowest_change_gen_date = last_date.loc[[last_date["pct_change"].idxmin()]]["article"].to_string(index=False)
+		
 	
 	
 	

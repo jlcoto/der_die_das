@@ -79,7 +79,7 @@ class Gender_guess:
             print("\n\nPlease, make sure to enter a valid input.")
             answer_report = input("Please write yes [y] or no [n]..\n\n  ").lower()
         if answer_report == "y" or "yes":
-            graph_test = grapher_gen_results.Graphs(pd.read_pickle("results"))
+            graph_test = grapher_gen_results.Graphs(pd.read_pickle("game_results"))
             graph_test.generate_report()
             reporting.run_report()
             os.system("open report.pdf")
@@ -98,14 +98,14 @@ class Gender_guess:
             self.print_input(gender_input, german)
             correct = self.checker(german_gender, gender_input)
             self.gen_data_base(gender_input, german_gender, german, english, correct)
-        if os.path.isfile("results"):
-            previous_data = pd.read_pickle("results")
+        if os.path.isfile("game_results"):
+            previous_data = pd.read_pickle("game_results")
             previous_data = previous_data.append(self.data_base, ignore_index=True)
-            previous_data.to_pickle("results")
+            previous_data.to_pickle("game_results")
             self.get_pdf_results()
         else: 
-            self.data_base.to_pickle("results")
+            self.data_base.to_pickle("game_results")
 
 
 prueba_1 = Gender_guess('final_data.csv')
-prueba_1.run_program(5)
+prueba_1.run_program(50)
