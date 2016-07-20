@@ -1,5 +1,6 @@
 import datetime
 import matplotlib.pyplot as plt
+import matplotlib.dates
 import pandas as pd
 import numpy as np
 import os.path
@@ -121,39 +122,43 @@ class Graphs:
         # plt.show()
 
     def daily_stats(self):
+        """Overall right/wrong percent by date"""
         grouped = (self.data_base["correct"]==True).groupby(self.data_base["date"])
         correct = grouped.mean().reset_index()
         correct["wrong"] =  1 - correct["correct"]
+        correct["date"] = pd.to_datetime(correct["date"], dayfirst=True)
+        correct = correct.sort_values("date")
         fig, ax = plt.subplots()
-        dates = [datetime.datetime.strptime(date, '%d-%m-%Y' ).date() for date in correct["date"] ]
-        left_limit = (datetime.datetime.strptime(pd.unique(self.data_base["date"])[0], '%d-%m-%Y' )  - 
+        left_limit = (datetime.datetime.strptime(pd.unique(self.data_base["date"])[0], '%d-%m-%Y' ) - 
                       datetime.timedelta(days= 1)).date() 
         right_limit = (datetime.datetime.strptime(pd.unique(self.data_base["date"])[-1], '%d-%m-%Y' )  
                        + datetime.timedelta(days=1)).date()
-        ax.plot(dates, correct['correct'], marker = '.', color='lightseagreen',
+        ax.plot(correct['date'], correct['correct'], marker = '.', color='lightseagreen',
                                            ms = 15, lw = 2, linestyle= '-' , label="correct" )
-        ax.plot(dates, correct['wrong'], color='coral', marker = '.',
+        ax.plot(correct['date'], correct['wrong'], color='coral', marker = '.',
                                            ms = 15, lw = 2, linestyle= '-', label="wrong"  )
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
         ax.yaxis.set_ticks_position('left')
         ax.xaxis.set_ticks_position('bottom')
         ax.grid(axis="y", zorder=0, color="#9698A1")
-        ax.set_xticks((dates))
+        ax.set_xticks((correct['date'].values))
         ax.set_xlim([left_limit, right_limit])
         ax.set_ylim([0., 1.])
         ax.legend(loc='upper right').get_frame().set_alpha(0.3)
         ax.set_title('Daily Stats', fontsize=15)
-        ax.set_xticklabels([date.strftime("%d %b") for date in dates])
-        # plt.show()
+        ax.set_xticklabels(correct['date'].map(lambda x: x.strftime("%d %b")))
+        ax.xaxis.set_major_formatter(matplotlib.dates.DateFormatter('%d \n %b'))
 
     def daily_stats_per_gender(self):
-        grouped = (self.data_base["correct"]==True).groupby([self.data_base["date"], self.data_base["article"]])
+        """Overall right/wrong percent by date and gender"""
+        grouped = (self.data_base["correct"]==True).groupby(
+            [self.data_base["date"], self.data_base["article"]])
         correct_gender = grouped.mean().reset_index()
         correct_gender["wrong"] = 1 - correct_gender["correct"] 
         correct_gender = correct_gender.set_index(["date", "article"]).unstack().reset_index()
-        dates = [datetime.datetime.strptime(date, '%d-%m-%Y' ).date() 
-                 for date in correct_gender["date"] ]
+        correct_gender["date"] = pd.to_datetime(correct_gender["date"], dayfirst=True)
+        correct_gender = correct_gender.sort_values("date")
         left_limit = (datetime.datetime.strptime(pd.unique(self.data_base["date"])[0], '%d-%m-%Y' )  - 
                       datetime.timedelta(days= 1)).date() 
         right_limit = (datetime.datetime.strptime(pd.unique(self.data_base["date"])[-1], '%d-%m-%Y' )  
@@ -163,9 +168,9 @@ class Graphs:
         lab_desc, lab_chars = [], []
         gen_spec = {"der":"#6191C5" , "die":"#D56054" , "das": "#69B17D"}
         for gender, color_gen in gen_spec.items():
-            ax.plot(dates, correct_gender["correct"][gender], color= color_gen, marker = '.', 
+            ax.plot(correct_gender["date"], correct_gender["correct"][gender], color= color_gen, marker = '.', 
                     ms = 12, lw = 2, linestyle= '-' )
-            ax.plot(dates, correct_gender["wrong"][gender], color= color_gen, marker = '.', 
+            ax.plot(correct_gender["date"], correct_gender["wrong"][gender], color= color_gen, marker = '.', 
                     ms = 12, lw = 2, linestyle= '--')
             leg_char_corr = plt.Line2D((0,1),(0,0), color=color_gen, marker='.', linestyle='-')
             leg_char_wrong = plt.Line2D((0,1),(0,0), color=color_gen, marker='.', linestyle='--')
@@ -177,14 +182,14 @@ class Graphs:
         ax.yaxis.set_ticks_position('left')
         ax.xaxis.set_ticks_position('bottom')
         ax.grid(axis="y", zorder=0, color="#9698A1")
-        ax.set_xticks((dates))
+        ax.set_xticks((correct_gender['date'].values))
         ax.set_xlim([left_limit, right_limit])
-        ax.set_ylim([-0.05, 1.1])
+        ax.set_ylim([0., 1.1])
         ax.set_title('Daily Stats per gender', fontsize=15)
-        ax.set_xticklabels([date.strftime("%d %b") for date in dates])
+        ax.set_xticklabels(correct_gender['date'].map(lambda x: x.strftime("%d %b")))
+        ax.xaxis.set_major_formatter(matplotlib.dates.DateFormatter('%d \n %b'))
         ax.legend(lab_chars, lab_desc, loc='upper center', 
-                  bbox_to_anchor=(0.5, -0.05), fancybox=True, shadow=True, ncol=3)
-        # plt.show()
+                  bbox_to_anchor=(0.5, -0.15), fancybox=True, shadow=True, ncol=3)
 
     def generate_report(self): 
         if not os.path.exists("img"):
@@ -203,5 +208,5 @@ class Graphs:
         plt.savefig('img/daily_stats_per_gender', bbox_inches='tight')
 
 
-graph_test = Graphs(pd.read_pickle("results"))
-graph_test.generate_report()
+
+

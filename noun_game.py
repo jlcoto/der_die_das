@@ -108,4 +108,4 @@ class Gender_guess:
 
 
 prueba_1 = Gender_guess('final_data.csv')
-prueba_1.run_program(50)
+prueba_1.run_program(10)
